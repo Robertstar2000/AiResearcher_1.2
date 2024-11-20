@@ -9,6 +9,9 @@ export const Header: React.FC = () => {
         <h1 className="text-3xl font-bold text-gray-900">AI Researcher</h1>
       </div>
       <p className="mt-2 text-gray-600">Your intelligent research assistant powered by AI</p>
+      <p className="mt-2 text-gray-600">-----------</p>
+      <p className="mt-2 text-gray-600">Developed under the Mars Technology Institute (MTI) to aid research benefiting</p>
+      <p className="mt-2 text-gray-600">Earth and the future colonization of Mars</p>
     </header>
   );
-}
+};

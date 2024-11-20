@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ResearchTypeConfig, CitationStyle, ResearchType, ResearchMode } from '../types';
+import { ResearchTypeConfig, CitationStyle, ResearchType, ResearchMode, ResearchSection } from '../types';
 import generalResearch from './researchTypes/general';
 import literatureResearch from './researchTypes/literature';
 import experimentalResearch from './researchTypes/experimental';
@@ -11,7 +11,7 @@ const formatRequirements = (requirements: string[]): string => {
   return requirements.map((req, index) => `${index + 1}. ${req}`).join('\n');
 };
 
-const constructPrompt = (title: string, section: any, citationStyle: CitationStyle): string => {
+const constructPrompt = (title: string, section: ResearchSection, citationStyle: CitationStyle): string => {
   const citationInstructions = {
     academic: "Use APA format for citations (Author, Year). Include full references at the end.",
     web: "Include URLs and access dates for web sources. List full references with titles and URLs at the end.",
@@ -52,20 +52,22 @@ Note: Do not include any other text or formatting instructions in your response.
 `.trim();
 };
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export const generateTitle = async (query: string, apiKey: string): Promise<string> => {
   try {
     const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
+      'https://api.groq.com/openai/v1/chat/completions',
       {
-        model: 'gpt-3.5-turbo',
+        model: 'llama-3.1-8b-instant',  
         messages: [
           {
             role: 'system',
-            content: 'Generate a professional, academic title for a research paper based on the given query. The title should be concise but descriptive.'
+            content: 'Generate one professional, academic title for a research paper based on the given query. The title should be concise but descriptive.'
           },
           {
             role: 'user',
-            content: `Generate a title for a research paper about: ${query}`
+            content: `Generate one title for a research paper about: ${query}`
           }
         ],
         temperature: 0.7,
@@ -78,6 +80,8 @@ export const generateTitle = async (query: string, apiKey: string): Promise<stri
         }
       }
     );
+
+    await delay(30000); // 30-second delay
 
     return response.data.choices[0].message.content.trim();
   } catch (error) {
@@ -104,7 +108,7 @@ export const getResearchTypeConfig = (type: ResearchType, mode: ResearchMode): R
 
 export const conductSectionResearch = async (
   title: string,
-  section: any,
+  sections: ResearchSection[],
   apiKey: string,
   citationStyle: CitationStyle,
   researchMode: ResearchMode,
@@ -117,48 +121,62 @@ export const conductSectionResearch = async (
       throw new Error(`Research type configuration not found for ${researchType} in ${researchMode} mode`);
     }
 
-    const model = researchMode === 'advanced' ? 'gpt-4' : 'gpt-3.5-turbo';
-    const prompt = constructPrompt(title, section, citationStyle);
+    const model = researchMode === 'advanced' ? 'mixtral-8x7b-32768' : 'mixtral-8x7b-32768';
+    let fullContent = '';
+    let allCitations: string[] = [];
 
-    const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
-      {
-        model,
-        messages: [
-          {
-            role: 'system',
-            content: `You are an expert research assistant specializing in ${config.title}. 
-                     Provide detailed, well-structured content with appropriate citations in ${citationStyle} format. 
-                     Every paragraph must include at least one citation.
-                     Ensure all claims are supported by references.
-                     Always include a numbered REFERENCES section at the end.
-                     Keep the original formatting exactly as requested.`
-          },
-          {
-            role: 'user',
-            content: prompt
+    for (const section of sections) {
+      const prompt = constructPrompt(title, section, citationStyle);
+
+      const response = await axios.post(
+        'https://api.groq.com/openai/v1/chat/completions',
+        {
+          model,
+          messages: [
+            {
+              role: 'system',
+              content: `You are an expert research assistant specializing in ${config.title}. 
+                       Provide detailed, well-structured content with appropriate citations in ${citationStyle} format. 
+                       Every paragraph must include at least one citation.
+                       Ensure all claims are supported by references.
+                       Always include a numbered REFERENCES section at the end.
+                       Keep the original formatting exactly as requested.`
+            },
+            {
+              role: 'user',
+              content: prompt
+            }
+          ],
+          temperature: 0.7,
+          max_tokens: 2000
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
           }
-        ],
-        temperature: 0.7,
-        max_tokens: 2000
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
         }
-      }
-    );
+      );
 
-    const fullContent = response.data.choices[0].message.content;
-    const [mainContent, referencesSection] = splitContentAndReferences(fullContent);
-    const citations = extractCitations(referencesSection);
+      await delay(30000); // 30-second delay
+
+      const sectionContent = response.data.choices[0].message.content;
+      const [mainContent, referencesSection] = splitContentAndReferences(sectionContent);
+      const citations = extractCitations(referencesSection);
+
+      console.log(`Section content for "${section.title}":`, mainContent);
+      console.log(`Citations for "${section.title}":`, citations);
+
+      fullContent += mainContent.trim() + '\n\n';
+      allCitations = allCitations.concat(citations);
+    }
     
     return {
-      content: mainContent.trim(),
-      citations: citations
+      content: fullContent.trim(),
+      citations: allCitations
     };
   } catch (error) {
+    console.error('Error during section research:', error);
     if (axios.isAxiosError(error)) {
       throw new Error(error.response?.data?.error?.message || 'API request failed');
     }

@@ -9,6 +9,8 @@ export interface ResearchSection {
   response: string;
   citations: string[];
   timestamp: number;
+  prompt: string; // Added property
+  requirements: string[]; // Added property
 }
 
 export interface ResearchHistory {

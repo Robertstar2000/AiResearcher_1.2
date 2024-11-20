@@ -12,7 +12,7 @@ import { ResearchTypeSelector } from './components/ResearchTypeSelector';
 import { ResearchModeSelector } from './components/ResearchModeSelector';
 import { DownloadButton } from './components/DownloadButton';
 import { ProgressBar } from './components/ProgressBar';
-import { conductSectionResearch, RESEARCH_TYPES, generateTitle, getResearchTypeConfig } from './services/api';
+import { conductSectionResearch, generateTitle, getResearchTypeConfig } from './services/api';
 import { ResearchHistory as ResearchHistoryType, ResearchSection, CitationStyle, ResearchType, ResearchMode } from './types';
 
 const App: React.FC = () => {
@@ -34,7 +34,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const config = getResearchTypeConfig(researchType, researchMode);
-    if (config) {
+    if (config && config.sections) {
       setTotalSections(config.sections.length);
     }
   }, [researchType, researchMode]);
@@ -70,29 +70,42 @@ const App: React.FC = () => {
     setShowTitleEdit(false);
     try {
       const config = getResearchTypeConfig(researchType, researchMode);
-      if (!config) {
-        throw new Error('Research type configuration not found');
+      if (!config || !Array.isArray(config.sections)) {
+        throw new Error('Research type configuration not found or sections is not an array');
       }
 
       const results: ResearchSection[] = [];
 
       for (const section of config.sections) {
+        console.log(`Fetching research for section: ${section.title}`);
         const result = await conductSectionResearch(
           currentTitle,
-          section,
+          [{
+            id: uuidv4(),
+            title: section.title,
+            prompt: section.prompt,
+            requirements: section.requirements,
+            response: '', // Placeholder, will be filled by conductSectionResearch
+            citations: [] // Placeholder, will be filled by conductSectionResearch
+          }],
           apiKey,
           citationStyle,
           researchMode,
           researchType
         );
+        console.log(`Received result for section: ${section.title}`, result);
         results.push({
           id: uuidv4(),
           title: section.title,
           response: result.content,
-          citations: result.citations
+          citations: result.citations,
+          prompt: section.prompt,
+          requirements: section.requirements
         });
-        setCurrentSections([...results]);
       }
+
+      console.log('Final research results:', results);
+      setCurrentSections(results);
 
       const newHistoryItem = {
         id: uuidv4(),
@@ -104,6 +117,7 @@ const App: React.FC = () => {
 
       setHistory(prev => [newHistoryItem, ...prev]);
     } catch (err) {
+      console.error('An error occurred during research:', err);
       setError(err instanceof Error ? err.message : 'An error occurred during research');
     } finally {
       setIsLoading(false);
@@ -117,7 +131,7 @@ const App: React.FC = () => {
   return (
     <div className="flex min-h-screen">
       <Sidebar />
-      <main className="flex-1 bg-gray-50 p-4">
+      <main className="flex-1 bg-gray-50 p-4 overflow-y-auto">
         <div className="mx-auto max-w-6xl">
           <Header />
           
@@ -174,7 +188,7 @@ const App: React.FC = () => {
                         <br />• Basic Research: May take several minutes to complete
                         <br />• Advanced Research: Can take hours for comprehensive analysis
                       </p>
-                      <h4 className="mb-2 font-semibold text-amber-800">Target Users</h4>
+                      <h4 className="mb-2 font-semibold text-amber-800">-----------</h4>
                       <p className="text-amber-600">
                         <strong>Acknowledgment:</strong> Special thanks to the creators of AI Scientist (Chris Lu, Cong Lu, Robert Tjarko Lange, Jakob Foerster, Jeff Clune, David Ha) 
                         whose innovative work inspired the development of this software.
@@ -189,6 +203,7 @@ const App: React.FC = () => {
               <ProgressBar 
                 progress={currentSections.length} 
                 total={totalSections} 
+                isLoading={isLoading}
               />
             )}
           </div>
@@ -200,7 +215,7 @@ const App: React.FC = () => {
           )}
 
           <ErrorBoundary>
-            {currentSections.length > 0 && (
+            {currentSections && currentSections.length > 0 ? (
               <div className="mb-8 space-y-4">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-semibold text-gray-900">{currentTitle}</h2>
@@ -212,15 +227,30 @@ const App: React.FC = () => {
                     />
                   )}
                 </div>
-                {currentSections.map((section) => (
-                  <ResearchResult
-                    key={section.id}
-                    title={section.title}
-                    content={section.response}
-                    citations={section.citations}
-                  />
-                ))}
+                {Array.isArray(currentSections) ? (
+                  (() => {
+                    console.log(`Mapping over ${currentSections.length} sections.`);
+                    return currentSections.map((section) => {
+                      console.log(`Processing section: ${section.title}`);
+                      return (
+                        <ResearchResult
+                          key={section.id}
+                          title={section.title}
+                          content={section.response}
+                          citations={section.citations}
+                        />
+                      );
+                    });
+                  })()
+                ) : (
+                  (() => {
+                    console.error('currentSections is not an array:', currentSections);
+                    return null;
+                  })()
+                )}
               </div>
+            ) : (
+              <div>No sections available to display.</div>
             )}
 
             <ResearchHistory 
