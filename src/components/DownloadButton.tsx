@@ -1,3 +1,5 @@
+// This file renders a download button component that allows users to download research sections in Markdown or DOCX format.
+
 import React, { useState } from 'react';
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import { ResearchSection } from '../types';

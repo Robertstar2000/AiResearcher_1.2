@@ -1,3 +1,5 @@
+// This file serves as the main entry point for the application, orchestrating the various components and managing the application's state.
+
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ResearchInput } from './components/ResearchInput';
@@ -44,6 +46,7 @@ const App: React.FC = () => {
     localStorage.setItem('openai_api_key', key);
   };
 
+  // Handles the submission of a research query and initiates title generation
   const handleQuerySubmit = async (query: string) => {
     if (!apiKey) {
       setError('Please enter your OpenAI API key first.');
@@ -66,6 +69,7 @@ const App: React.FC = () => {
     }
   };
 
+  // Accepts the generated title and conducts research for each section
   const handleTitleAccept = async () => {
     setShowTitleEdit(false);
     try {

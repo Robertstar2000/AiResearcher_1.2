@@ -1,3 +1,5 @@
+// This file renders a progress bar component to visually indicate the progress of a task.
+
 import React from 'react';
 
 interface ProgressBarProps {

@@ -1,3 +1,5 @@
+// This file renders the header component of the application, displaying the title and introductory text.
+
 import React from 'react';
 import { BeakerIcon } from '@heroicons/react/24/outline';
 

@@ -13,7 +13,7 @@ export const ResearchInput: React.FC<ResearchInputProps> = ({ onSubmit, isLoadin
     e.preventDefault();
     if (query.trim() && !isLoading) {
       await onSubmit(query.trim());
-      setQuery('');
+      // Removed setQuery(''); to keep the query displayed
     }
   };
 

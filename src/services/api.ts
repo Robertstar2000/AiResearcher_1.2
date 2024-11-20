@@ -1,3 +1,5 @@
+// This file handles API interactions for generating research titles and conducting section research using LLMs.
+
 import axios from 'axios';
 import { ResearchTypeConfig, CitationStyle, ResearchType, ResearchMode, ResearchSection } from '../types';
 import generalResearch from './researchTypes/general';
@@ -7,10 +9,12 @@ import advancedGeneralResearch from './researchTypes/a_general';
 import { literatureSearchPaper as advancedLiteratureResearch } from './researchTypes/a_literature';
 import { experimentalDesign as advancedExperimentalResearch } from './researchTypes/a_expermental';
 
+// Formats the list of requirements into a numbered string
 const formatRequirements = (requirements: string[]): string => {
   return requirements.map((req, index) => `${index + 1}. ${req}`).join('\n');
 };
 
+// Constructs a prompt for the LLM to generate content for a research section
 const constructPrompt = (title: string, section: ResearchSection, citationStyle: CitationStyle): string => {
   const citationInstructions = {
     academic: "Use APA format for citations (Author, Year). Include full references at the end.",
@@ -52,8 +56,10 @@ Note: Do not include any other text or formatting instructions in your response.
 `.trim();
 };
 
+// Introduces a delay to simulate processing time
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
+// Generates a research title using the LLM
 export const generateTitle = async (query: string, apiKey: string): Promise<string> => {
   try {
     const response = await axios.post(
@@ -92,6 +98,7 @@ export const generateTitle = async (query: string, apiKey: string): Promise<stri
   }
 };
 
+// Maps research types to their configurations
 export const RESEARCH_TYPES: Record<string, ResearchTypeConfig> = {
   general: generalResearch,
   literature: literatureResearch,
@@ -101,11 +108,13 @@ export const RESEARCH_TYPES: Record<string, ResearchTypeConfig> = {
   a_experimental: advancedExperimentalResearch
 };
 
+// Retrieves the configuration for a specific research type and mode
 export const getResearchTypeConfig = (type: ResearchType, mode: ResearchMode): ResearchTypeConfig => {
   const key = mode === 'advanced' ? `a_${type}` : type;
   return RESEARCH_TYPES[key] || RESEARCH_TYPES[type];
 };
 
+// Conducts research for each section using the LLM and assembles the document
 export const conductSectionResearch = async (
   title: string,
   sections: ResearchSection[],
@@ -184,6 +193,7 @@ export const conductSectionResearch = async (
   }
 };
 
+// Splits the content and references section from the LLM response
 const splitContentAndReferences = (content: string): [string, string] => {
   const parts = content.split(/REFERENCES:?/i);
   if (parts.length > 1) {
@@ -192,6 +202,7 @@ const splitContentAndReferences = (content: string): [string, string] => {
   return [content.trim(), ''];
 };
 
+// Extracts citations from the references section
 const extractCitations = (referencesSection: string): string[] => {
   if (!referencesSection) return [];
   
