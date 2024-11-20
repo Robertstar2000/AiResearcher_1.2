@@ -71,7 +71,8 @@ const App: React.FC = () => {
 
   // Accepts the generated title and conducts research for each section
   const handleTitleAccept = async () => {
-    setShowTitleEdit(false);
+    // Keep the title edit visible until logout
+    // setShowTitleEdit(false);
     try {
       const config = getResearchTypeConfig(researchType, researchMode);
       if (!config || !Array.isArray(config.sections)) {
@@ -87,10 +88,12 @@ const App: React.FC = () => {
           [{
             id: uuidv4(),
             title: section.title,
+            query: currentQuery, // Ensure query is included
             prompt: section.prompt,
             requirements: section.requirements,
             response: '', // Placeholder, will be filled by conductSectionResearch
-            citations: [] // Placeholder, will be filled by conductSectionResearch
+            citations: [], // Placeholder, will be filled by conductSectionResearch
+            timestamp: Date.now() // Ensure timestamp is included
           }],
           apiKey,
           citationStyle,
@@ -101,10 +104,12 @@ const App: React.FC = () => {
         results.push({
           id: uuidv4(),
           title: section.title,
+          query: currentQuery, // Ensure query is included
           response: result.content,
           citations: result.citations,
           prompt: section.prompt,
-          requirements: section.requirements
+          requirements: section.requirements,
+          timestamp: Date.now() // Ensure timestamp is included
         });
       }
 

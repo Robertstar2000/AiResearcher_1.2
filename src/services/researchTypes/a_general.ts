@@ -1,184 +1,239 @@
-import { ResearchTypeConfig } from '../../types';
 
-const generalResearch: ResearchTypeConfig = {
-  title: "Advanced General Research",
-  description: "Comprehensive research on any topic",
+export const generalResearch = {
+  title: "General Research",
+  description: "Comprehensive research framework tailored for academic purposes to assist human researchers",
   sections: [
     {
       title: "I. Abstract",
-      prompt: "Provide a brief overview of the research topic and main findings",
+      prompt: "Provide a concise summary of the research topic, objectives, and key findings.",
       requirements: [
-        "Summarize the research topic in a concise manner",
-        "Highlight the main research objectives",
-        "Mention the key findings or results",
-        "Provide a brief statement on the significance of the study",
-        "Elaborate on the research methodology",
-        "Summarize key conclusions drawn",
-        "Ensure clarity in presenting extended information"
-      ]
-    },
-    {
-      title: "I.B. Keywords",
-      prompt: "List relevant keywords associated with the research",
-      requirements: [
-        "Include 5-7 pertinent keywords",
-        "Ensure keywords reflect main topics",
-        "Assist in indexing and search optimization",
-        "Avoid overly generic terms"
-      ]
-    },
-    {
-      title: "I.D. Research Implications",
-      prompt: "Briefly discuss the potential impact of the findings",
-      requirements: [
-        "Highlight theoretical implications",
-        "Mention practical applications",
-        "Address possible future developments",
-        "Stay within the abstract's length constraints"
+        "Summarize the research topic in a concise manner.",
+        "Highlight the main research objectives.",
+        "Mention the key findings or results.",
+        "Provide a brief statement on the significance of the study."
       ]
     },
     {
       title: "II. Introduction",
-      prompt: "Introduce the topic, provide background information, and state research objectives",
+      prompt: "Introduce the topic, provide background information, and clearly state the research objectives.",
       requirements: [
-        "Introduce the topic and explain its relevance",
-        "Provide background information and context",
-        "Clearly state the research problem or question",
-        "Outline the research objectives and scope"
-      ]
-    },
-    {
-      title: "II.A. Historical Background",
-      prompt: "Detail the historical development related to the topic",
-      requirements: [
-        "Chronicle key events leading up to current research",
-        "Discuss previous significant studies",
-        "Highlight shifts in understanding over time",
-        "Provide context for current research importance"
-      ]
-    },
-    {
-      title: "II.B. Significance of the Study",
-      prompt: "Explain why the research is important",
-      requirements: [
-        "Discuss the gap in knowledge the study addresses",
-        "Highlight potential benefits",
-        "Connect to real-world applications",
-        "Justify the need for the study"
-      ]
-    },
-    {
-      title: "II.C. Conceptual Framework",
-      prompt: "Outline the conceptual framework guiding the research",
-      requirements: [
-        "Define key concepts and variables",
-        "Explain relationships between them",
-        "Illustrate the framework with a diagram if possible",
-        "Set the foundation for hypotheses or questions"
-      ]
-    },
-    {
-      title: "II.D. Hypotheses",
-      prompt: "State the hypotheses to be tested",
-      requirements: [
-        "Present clear and testable hypotheses",
-        "Ensure they align with research objectives",
-        "Differentiate between null and alternative hypotheses",
-        "Provide rationale for each hypothesis"
-      ]
-    },
-    {
-      title: "II.E. Scope and Delimitations",
-      prompt: "Clarify the study's scope and any delimitations",
-      requirements: [
-        "Specify what is included and excluded",
-        "Justify these choices",
-        "Discuss how they affect the study's applicability",
-        "Acknowledge any constraints"
+        "Introduce the topic and explain its relevance.",
+        "Provide necessary background information and context.",
+        "Clearly articulate the research problem or question.",
+        "Outline the scope and objectives of the research."
       ]
     },
     {
       title: "III. Literature Review",
-      prompt: "Review and analyze relevant existing research and theories",
-      requirements: [
-        "Summarize key studies and their findings",
-        "Highlight gaps or limitations in existing research",
-        "Discuss theoretical frameworks or models",
-        "Establish the connection to the current research"
-      ]
-    },
-    {
-      title: "III.A. Theoretical Perspectives",
-      prompt: "Examine different theories related to the topic",
-      requirements: [
-        "Describe multiple theoretical viewpoints",
-        "Compare and contrast these theories",
-        "Discuss their relevance to your study",
-        "Highlight the chosen theory for your framework"
-      ]
-    },
-    {
-      title: "III.B. Methodological Approaches",
-      prompt: "Analyze various research methods used in previous studies",
-      requirements: [
-        "Review different methodologies applied",
-        "Include explanation of the use of AI, agentic AI processes, chain of thought, and tree of thought processes",
-        "Assess their strengths and weaknesses",
-        "Discuss trends in methodological choices",
-        "Relate findings to your methodological decisions"
-      ]
-    },
-    {
-      title: "III.C. Critical Analysis",
-      prompt: "Critically analyze the literature to identify inconsistencies",
-      requirements: [
-        "Identify conflicting findings",
-        "Discuss possible reasons for discrepancies",
-        "Evaluate the robustness of studies",
-        "Highlight areas needing clarification"
-      ]
-    },
-    {
-      title: "III.D. Summary of Key Findings",
-      prompt: "Summarize the main findings from the literature",
-      requirements: [
-        "Synthesize information across studies",
-        "Identify common themes",
-        "Discuss overall trends",
-        "Prepare the reader for your research contribution"
-      ]
-    },
-    {
-      title: "III.E. Conceptual Gaps",
-      prompt: "Identify conceptual gaps in the existing literature",
-      requirements: [
-        "Point out unexplored concepts",
-        "Explain the significance of these gaps",
-        "Relate them to your research questions",
-        "Suggest how your study will address them"
+      prompt: "Review and analyze existing research, highlighting gaps and connections to the current study.",
+      subsections: [
+        {
+          title: "III-A. Theoretical Foundations",
+          prompt: "Discuss the theoretical basis for the research topic.",
+          requirements: [
+            "Explain key theories relevant to the research.",
+            "Discuss their development and significance.",
+            "Relate theories to the current study."
+          ]
+        },
+        {
+          title: "III-B. Historical Context",
+          prompt: "Provide an overview of the historical development of the research topic.",
+          requirements: [
+            "Trace the evolution of the topic over time.",
+            "Highlight significant milestones or breakthroughs.",
+            "Identify major contributors to the field."
+          ]
+        },
+        {
+          title: "III-C. Comparative Analysis",
+          prompt: "Compare and contrast findings from key studies.",
+          requirements: [
+            "Identify similarities and differences among studies.",
+            "Highlight conflicting evidence or perspectives.",
+            "Discuss implications of the variations for the current research."
+          ]
+        },
+        {
+          title: "III-D. Emerging Trends",
+          prompt: "Explore recent advancements and emerging trends in the research area.",
+          requirements: [
+            "Identify new developments or technologies.",
+            "Discuss their potential impact on the field.",
+            "Highlight areas of innovation and opportunity."
+          ]
+        }
       ]
     },
     {
       title: "IV. Research Methodology",
-      prompt: "Describe the research methods and approach found, use chain of thought to list methods and approach",
-      requirements: [
-        "Detail the research and rationale",
-        "Describe data collection methods and tools",
-        "Explain sampling strategy and participants",
-        "Outline data analysis techniques"
+      prompt: "Detail the research methods, tools, and approaches used in the study.",
+      subsections: [
+        {
+          title: "IV-A. Research Design",
+          prompt: "Explain the overall research framework and approach.",
+          requirements: [
+            "Describe whether the research is qualitative, quantitative, or mixed-methods.",
+            "Justify the choice of design for the research objectives."
+          ]
+        },
+        {
+          title: "IV-B. Tools and Instruments",
+          prompt: "Detail the tools, technologies, or instruments used for data collection.",
+          requirements: [
+            "List all tools and their specifications.",
+            "Explain their role in ensuring data accuracy and reliability."
+          ]
+        },
+        {
+          title: "IV-C. Ethical Considerations",
+          prompt: "Discuss ethical aspects of the research process.",
+          requirements: [
+            "Describe how participant confidentiality was maintained.",
+            "Address any ethical challenges encountered."
+          ]
+        }
       ]
     },
     {
-      title: "IV.A. Research Philosophy",
-      prompt: "Discuss the underlying research philosophy (e.g., positivism, interpretivism)",
-      requirements: [
-        "Define the chosen philosophy",
-        "Justify its selection for your study",
-        "Explain how it influences methodology",
-        "Contrast with other philosophies if relevant"
+      title: "IV-D. Data Sources and Organization",
+      prompt: "Identify and describe the data sources used in the research, and present data in organized formats.",
+      subsections: [
+        {
+          title: "IV-D-1. Data Categorization",
+          prompt: "Explain how data was categorized for analysis.",
+          requirements: [
+            "Define key data categories and their relevance.",
+            "Ensure clarity in the categorization logic."
+          ]
+        },
+        {
+          title: "IV-D-2. Data Validation and Cleaning",
+          prompt: "Describe processes for validating and cleaning data.",
+          requirements: [
+            "Explain steps taken to identify and correct errors.",
+            "Discuss how data reliability was ensured."
+          ]
+        }
+      ]
+    },
+    {
+      title: "V. Results",
+      prompt: "Present the findings with data analysis and visual representation.",
+      subsections: [
+        {
+          title: "V-A. Key Findings",
+          prompt: "Summarize the main results of the study.",
+          requirements: [
+            "Highlight the most significant findings.",
+            "Provide interpretations relevant to the research question."
+          ]
+        },
+        {
+          title: "V-B. Statistical Analysis",
+          prompt: "Detail statistical methods used and their outcomes.",
+          requirements: [
+            "Include confidence intervals, p-values, and effect sizes.",
+            "Explain the statistical significance of results."
+          ]
+        },
+        {
+          title: "V-C. Qualitative Insights",
+          prompt: "Summarize insights derived from qualitative data.",
+          requirements: [
+            "Present themes or patterns in the data.",
+            "Use direct quotes or excerpts where appropriate."
+          ]
+        }
+      ]
+    },
+    {
+      title: "VI. Discussion",
+      prompt: "Interpret findings and discuss their implications in the context of the research objectives.",
+      subsections: [
+        {
+          title: "VI-A. Theoretical Implications",
+          prompt: "Discuss how findings contribute to existing theories.",
+          requirements: [
+            "Explain whether findings support or challenge theoretical assumptions.",
+            "Propose refinements or extensions to current theories."
+          ]
+        },
+        {
+          title: "VI-B. Practical Applications",
+          prompt: "Explore how findings can be applied in real-world contexts.",
+          requirements: [
+            "Identify potential industries or fields of application.",
+            "Discuss practical benefits or challenges."
+          ]
+        },
+        {
+          title: "VI-C. Unanticipated Outcomes",
+          prompt: "Describe unexpected findings or results.",
+          requirements: [
+            "Explain possible reasons for these outcomes.",
+            "Discuss their implications for the field."
+          ]
+        }
+      ]
+    },
+    {
+      title: "VII. Conclusion",
+      prompt: "Summarize the key takeaways and propose directions for future research.",
+      subsections: [
+        {
+          title: "VII-A. Policy Implications",
+          prompt: "Discuss the relevance of findings for policymaking.",
+          requirements: [
+            "Highlight potential impacts on public or organizational policy.",
+            "Provide actionable recommendations for policymakers."
+          ]
+        },
+        {
+          title: "VII-B. Knowledge Gaps",
+          prompt: "Identify remaining questions or gaps in the research area.",
+          requirements: [
+            "List specific areas that require further exploration.",
+            "Explain the importance of addressing these gaps."
+          ]
+        }
+      ]
+    },
+    {
+      title: "VIII. References",
+      prompt: "Compile a comprehensive list of references cited in the research.",
+      subsections: [
+        {
+          title: "VIII-A. Annotated Bibliography",
+          prompt: "Provide a brief annotation for each reference used.",
+          requirements: [
+            "Include a summary of each source’s main points.",
+            "Explain its relevance to the study."
+          ]
+        }
+      ]
+    },
+    {
+      title: "IX. Appendices",
+      prompt: "Provide additional data, tools, or resources used in the study.",
+      subsections: [
+        {
+          title: "IX-A. Supplementary Figures",
+          prompt: "Include figures that support the findings but are not in the main text.",
+          requirements: [
+            "Label and describe each figure clearly.",
+            "Explain its relevance to the study."
+          ]
+        },
+        {
+          title: "IX-B. Raw Data",
+          prompt: "Provide raw data or summarized datasets used in the analysis.",
+          requirements: [
+            "Ensure data is organized for easy reference.",
+            "Include explanations for abbreviations or codes."
+          ]
+        }
       ]
     }
   ]
 };
-
-export default generalResearch;

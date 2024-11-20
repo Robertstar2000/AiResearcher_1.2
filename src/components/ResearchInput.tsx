@@ -1,3 +1,5 @@
+// This file renders a component for inputting research queries, allowing users to submit queries for processing.
+
 import React, { useState } from 'react';
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
 

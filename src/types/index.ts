@@ -1,3 +1,5 @@
+// This file defines TypeScript types and interfaces used throughout the application for managing research data and state.
+
 export type CitationStyle = 'academic' | 'web' | 'informal';
 export type ResearchType = 'general' | 'literature' | 'experimental';
 export type ResearchMode = 'basic' | 'advanced';
@@ -9,8 +11,8 @@ export interface ResearchSection {
   response: string;
   citations: string[];
   timestamp: number;
-  prompt: string; // Added property
-  requirements: string[]; // Added property
+  prompt: string;
+  requirements: string[];
 }
 
 export interface ResearchHistory {
@@ -28,4 +30,16 @@ export interface ResearchState {
   currentQuery: string;
   isLoading: boolean;
   error: string | null;
+}
+
+export interface ResearchSectionConfig {
+  title: string;
+  prompt: string;
+  requirements: string[];
+}
+
+export interface ResearchTypeConfig {
+  title: string;
+  description: string;
+  sections: ResearchSectionConfig[];
 }

@@ -1,77 +1,112 @@
-import { ResearchTypeConfig } from '../../types';
-
 const generalResearch: ResearchTypeConfig = {
   title: "General Research",
-  description: "Comprehensive research on any topic",
+  description: "Comprehensive research framework tailored for academic purposes to assist human researchers",
   sections: [
     {
       title: "I. Abstract",
-      prompt: "Provide a brief overview of the research topic and main findings",
+      prompt: "Provide a concise summary of the research topic, objectives, and key findings.",
       requirements: [
-        "Summarize the research topic in a concise manner",
-        "Highlight the main research objectives",
-        "Mention the key findings or results",
-        "Provide a brief statement on the significance of the study"
+        "Summarize the research topic in a concise manner.",
+        "Highlight the main research objectives.",
+        "Mention the key findings or results.",
+        "Provide a brief statement on the significance of the study."
       ]
     },
     {
       title: "II. Introduction",
-      prompt: "Introduce the topic, provide background information, and state research objectives",
+      prompt: "Introduce the topic, provide background information, and clearly state the research objectives.",
       requirements: [
-        "Introduce the topic and explain its relevance",
-        "Provide background information and context",
-        "Clearly state the research problem or question",
-        "Outline the research objectives and scope"
+        "Introduce the topic and explain its relevance.",
+        "Provide necessary background information and context.",
+        "Clearly articulate the research problem or question.",
+        "Outline the scope and objectives of the research."
       ]
     },
     {
       title: "III. Literature Review",
-      prompt: "Review and analyze relevant existing research and theories",
+      prompt: "Review and analyze existing research, highlighting gaps and connections to the current study.",
       requirements: [
-        "Summarize key studies and their findings",
-        "Highlight gaps or limitations in existing research",
-        "Discuss theoretical frameworks or models",
-        "Establish the connection to the current research"
+        "Summarize key studies and findings.",
+        "Discuss existing theories, frameworks, or methodologies.",
+        "Identify gaps, inconsistencies, or limitations in prior research.",
+        "Explain how the current study builds upon or diverges from previous work."
       ]
     },
     {
-      title: "IV. Methodology",
-      prompt: "Describe the research methods and approach used",
+      title: "IV. Research Methodology",
+      prompt: "Detail the research methods, tools, and approaches used in the study.",
       requirements: [
-        "Detail the research design and rationale",
-        "Describe data collection methods and tools",
-        "Explain the sampling strategy and participants",
-        "Outline the data analysis techniques"
+        "Explain the research design and rationale.",
+        "Detail data collection methods and tools.",
+        "Describe sampling strategy and participant demographics.",
+        "Outline data analysis techniques and software (if applicable).",
+        "Discuss ethical considerations and limitations in the methodology."
+      ]
+    },
+    {
+      title: "IV-A. Data Sources and Organization",
+      prompt: "Identify and describe the data sources used in the research, and present data in organized formats.",
+      requirements: [
+        "List and describe all primary and secondary data sources.",
+        "Explain the relevance and reliability of the data sources.",
+        "Present available data in well-organized tables or charts.",
+        "For large datasets, provide accessible links to the data files.",
+        "Ensure proper formatting and citation of data sources."
       ]
     },
     {
       title: "V. Results",
-      prompt: "Present the findings and data analysis",
+      prompt: "Present the findings with data analysis and visual representation.",
       requirements: [
-        "Report the main findings clearly",
-        "Include relevant data and statistics",
-        "Use tables, graphs, or visuals to support the text",
-        "Highlight significant trends or patterns"
+        "Report findings in a clear and organized manner.",
+        "Include relevant data, statistics, or qualitative results.",
+        "Use tables, graphs, or visuals to support findings.",
+        "Highlight significant trends, patterns, or anomalies."
       ]
     },
     {
       title: "VI. Discussion",
-      prompt: "Interpret results and discuss implications",
+      prompt: "Interpret findings and discuss their implications in the context of the research objectives.",
       requirements: [
-        "Interpret the findings in the context of the research objectives",
-        "Discuss implications for theory or practice",
-        "Identify limitations of the study",
-        "Suggest potential areas for future research"
+        "Discuss how findings align or contrast with existing research.",
+        "Interpret results within the theoretical or practical framework.",
+        "Identify limitations of the findings.",
+        "Propose implications for theory, practice, or policy."
       ]
     },
     {
       title: "VII. Conclusion",
-      prompt: "Summarize key findings and suggest future research directions",
+      prompt: "Summarize the key takeaways and propose directions for future research.",
       requirements: [
-        "Summarize the main research outcomes",
-        "Reiterate the significance of the study",
-        "Discuss how the research contributes to the field",
-        "Propose recommendations for future studies"
+        "Recap the main findings and their significance.",
+        "Discuss the contribution of the research to the field.",
+        "Suggest practical applications or future research directions."
+      ]
+    },
+    {
+      title: "VIII. References",
+      prompt: "Compile a comprehensive list of references cited in the research.",
+      requirements: [
+        "Ensure citations are formatted according to the selected academic style (e.g., APA, MLA, Chicago).",
+        "Include all sources referenced in the paper.",
+        "Verify accuracy of citations and attributions."
+      ]
+    },
+    {
+      title: "IX. Appendices",
+      prompt: "Provide additional data, tools, or resources used in the study.",
+      requirements: [
+        "Include supplementary materials like surveys, raw data, or extended tables.",
+        "Organize appendices clearly with appropriate labels.",
+        "Reference appendices within the main text as needed."
+      ]
+    },
+    {
+      title: "X. Acknowledgements",
+      prompt: "Acknowledge individuals, institutions, or organizations that contributed to the research.",
+      requirements: [
+        "Mention funding sources, if applicable.",
+        "Thank collaborators, advisor, or institutions.",
       ]
     }
   ]

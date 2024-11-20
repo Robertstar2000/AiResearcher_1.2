@@ -1,3 +1,5 @@
+// This file renders a component for confirming and editing a generated research title before final acceptance.
+
 import React, { useState } from 'react';
 
 interface TitleConfirmationProps {
