@@ -7,13 +7,11 @@ import { downloadDocument } from '../utils/downloadUtils';
 
 interface DownloadButtonProps {
   sections: ResearchSection[];
-  query: string;
   apiKey: string;
 }
 
 export const DownloadButton: React.FC<DownloadButtonProps> = ({ 
   sections, 
-  query,
   apiKey 
 }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +24,7 @@ export const DownloadButton: React.FC<DownloadButtonProps> = ({
 
     setIsLoading(true);
     try {
-      await downloadDocument(sections, query, apiKey, format);
+      await downloadDocument(sections, apiKey, format);
     } catch (error) {
       console.error('Download failed:', error);
     } finally {

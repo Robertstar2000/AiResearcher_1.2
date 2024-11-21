@@ -9,7 +9,7 @@ export default defineConfig({
       name: 'configure-response-headers',
       configureServer: (server) => {
         server.middlewares.use((req, res, next) => {
-          res.setHeader('Content-Security-Policy', "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https:;");
+          res.setHeader('Content-Security-Policy', "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https:; connect-src 'self' https://api.groq.com https://az764295.vo.msecnd.net;");
           next();
         });
       }

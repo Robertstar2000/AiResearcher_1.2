@@ -7,10 +7,10 @@ import literatureResearch from './researchTypes/literature';
 import experimentalResearch from './researchTypes/experimental';
 import { generalResearch as advancedGeneralResearch } from './researchTypes/a_general';
 import { literatureSearchPaper as advancedLiteratureResearch } from './researchTypes/a_literature';
-import { experimentalDesign as advancedExperimentalResearch } from './researchTypes/a_expermental';
+import { experimentalResearch as advancedExperimentalResearch } from './researchTypes/a_expermental';
 
 // Formats the list of requirements into a numbered string
-const formatRequirements = (requirements: string[]): string => {
+const formatRequirements = (requirements: string[] = []): string => {
   return requirements.map((req, index) => `${index + 1}. ${req}`).join('\n');
 };
 
@@ -69,7 +69,7 @@ export const generateTitle = async (query: string, apiKey: string): Promise<stri
         messages: [
           {
             role: 'system',
-            content: 'Generate one professional, academic title for a research paper based on the given query. The title should be concise but descriptive.'
+            content: 'Generate only one professional, academic title for a research paper based on the given query. The title should be concise but descriptive.'
           },
           {
             role: 'user',
@@ -111,13 +111,15 @@ export const RESEARCH_TYPES: Record<string, ResearchTypeConfig> = {
 // Retrieves the configuration for a specific research type and mode
 export const getResearchTypeConfig = (type: ResearchType, mode: ResearchMode): ResearchTypeConfig => {
   const key = mode === 'advanced' ? `a_${type}` : type;
-  return RESEARCH_TYPES[key] || RESEARCH_TYPES[type];
+  const config = RESEARCH_TYPES[key] || RESEARCH_TYPES[type];
+  console.log(`Retrieved config for type: ${type}, mode: ${mode}`, config);
+  return config;
 };
 
 // Conducts research for each section using the LLM and assembles the document
 export const conductSectionResearch = async (
   title: string,
-  sections: ResearchSection[],
+  sections: ResearchSection[] = [],
   apiKey: string,
   citationStyle: CitationStyle,
   researchMode: ResearchMode,

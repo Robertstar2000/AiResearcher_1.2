@@ -7,22 +7,20 @@ export type ResearchMode = 'basic' | 'advanced';
 export interface ResearchSection {
   id: string;
   title: string;
-  query: string;
   response: string;
   citations: string[];
-  timestamp: number;
-  prompt: string;
-  requirements: string[];
+  prompt: string; // Added prompt property
+  requirements: string[]; // Added requirements property
 }
 
 export interface ResearchHistory {
   id: string;
-  query: string;
   sections: ResearchSection[];
-  citationStyle: CitationStyle;
+  citationStyle: CitationStyle; // Added citationStyle property
   researchType: ResearchType;
   researchMode: ResearchMode;
-  timestamp: number;
+  query: string;
+  timestamp: string; // Changed to string to match usage
 }
 
 export interface ResearchState {

@@ -59,13 +59,13 @@ const App: React.FC = () => {
     setCurrentQuery(query);
     setCurrentSections([]);
     setShowTitleEdit(false);
-    setProgress(2); // Set progress to 2% after query submission
+    setProgress(.1); // Set progress to 0.5% after query submission
 
     try {
       const title = await generateTitle(query, apiKey);
       setCurrentTitle(title);
       setShowTitleEdit(true);
-      setProgress(5); // Set progress to 5% after title generation
+      setProgress(.2); // Set progress to 1% after title generation
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate title');
       setIsLoading(false);
@@ -106,18 +106,21 @@ const App: React.FC = () => {
           response: result.content,
           citations: result.citations
         });
+        setProgress((prevProgress) => prevProgress + (1 / totalSections)); // Update progress
       }
 
       console.log('Final research results:', results);
       setCurrentSections(results);
 
-      const newHistoryItem = {
+      const newHistoryItem: ResearchHistoryType = {
         id: uuidv4(),
         title: currentTitle,
         sections: results,
         citationStyle,
         researchType,
-        researchMode
+        researchMode,
+        query: currentQuery,
+        timestamp: Date.now().toString() // Ensure timestamp is a string
       };
 
       setHistory(prev => [newHistoryItem, ...prev]);
@@ -160,7 +163,7 @@ const App: React.FC = () => {
                 />
                 <button
                   onClick={handleTitleAccept}
-                  className="mt-2 rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                  className="mt-2 rounded-md bg-green-600 px-4 py-2 text-white hover:bg-green-700" // Changed to green
                 >
                   Accept Research Target
                 </button>
@@ -194,9 +197,8 @@ const App: React.FC = () => {
                         <br />• Advanced Research: Can take hours for comprehensive analysis
                       </p>
                       <h4 className="mb-2 font-semibold text-amber-800">-----------</h4>
-                      <p className="text-amber-600">
-                        <strong>Acknowledgment:</strong> Special thanks to the creators of AI Scientist (Chris Lu, Cong Lu, Robert Tjarko Lange, Jakob Foerster, Jeff Clune, David Ha) 
-                        whose innovative work inspired the development of this software.
+                      <p className="text-blue-600"> {/* Changed to blue */}
+                        <strong>Acknowledgment:</strong> Developed under the Mars Technology Institute (MTI) to aid research benefiting Earth and the future colonization of Mars
                       </p>
                     </div>
                   </div>
