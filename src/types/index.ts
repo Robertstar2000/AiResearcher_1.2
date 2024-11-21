@@ -35,7 +35,8 @@ export interface ResearchState {
 export interface ResearchSectionConfig {
   title: string;
   prompt: string;
-  requirements: string[];
+  requirements?: string[];
+  subsections?: ResearchSectionConfig[];
 }
 
 export interface ResearchTypeConfig {

@@ -33,6 +33,7 @@ const App: React.FC = () => {
   const [researchMode, setResearchMode] = useState<ResearchMode>('basic');
   const [totalSections, setTotalSections] = useState(0);
   const [showTitleEdit, setShowTitleEdit] = useState(false);
+  const [progress, setProgress] = useState(0); // New state for progress
 
   useEffect(() => {
     const config = getResearchTypeConfig(researchType, researchMode);
@@ -58,11 +59,13 @@ const App: React.FC = () => {
     setCurrentQuery(query);
     setCurrentSections([]);
     setShowTitleEdit(false);
+    setProgress(2); // Set progress to 2% after query submission
 
     try {
       const title = await generateTitle(query, apiKey);
       setCurrentTitle(title);
       setShowTitleEdit(true);
+      setProgress(5); // Set progress to 5% after title generation
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate title');
       setIsLoading(false);
@@ -88,12 +91,8 @@ const App: React.FC = () => {
           [{
             id: uuidv4(),
             title: section.title,
-            query: currentQuery, // Ensure query is included
-            prompt: section.prompt,
-            requirements: section.requirements,
             response: '', // Placeholder, will be filled by conductSectionResearch
-            citations: [], // Placeholder, will be filled by conductSectionResearch
-            timestamp: Date.now() // Ensure timestamp is included
+            citations: [] // Placeholder, will be filled by conductSectionResearch
           }],
           apiKey,
           citationStyle,
@@ -104,12 +103,8 @@ const App: React.FC = () => {
         results.push({
           id: uuidv4(),
           title: section.title,
-          query: currentQuery, // Ensure query is included
           response: result.content,
-          citations: result.citations,
-          prompt: section.prompt,
-          requirements: section.requirements,
-          timestamp: Date.now() // Ensure timestamp is included
+          citations: result.citations
         });
       }
 
@@ -118,10 +113,11 @@ const App: React.FC = () => {
 
       const newHistoryItem = {
         id: uuidv4(),
-        query: currentQuery,
         title: currentTitle,
-        timestamp: new Date().toISOString(),
-        sections: results
+        sections: results,
+        citationStyle,
+        researchType,
+        researchMode
       };
 
       setHistory(prev => [newHistoryItem, ...prev]);
@@ -210,7 +206,7 @@ const App: React.FC = () => {
 
             {isLoading && (
               <ProgressBar 
-                progress={currentSections.length} 
+                progress={progress} // Use the new progress state
                 total={totalSections} 
                 isLoading={isLoading}
               />
@@ -231,7 +227,6 @@ const App: React.FC = () => {
                   {currentSections.length === totalSections && (
                     <DownloadButton 
                       sections={currentSections} 
-                      query={currentQuery}
                       apiKey={apiKey}
                     />
                   )}

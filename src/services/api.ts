@@ -5,7 +5,7 @@ import { ResearchTypeConfig, CitationStyle, ResearchType, ResearchMode, Research
 import generalResearch from './researchTypes/general';
 import literatureResearch from './researchTypes/literature';
 import experimentalResearch from './researchTypes/experimental';
-import advancedGeneralResearch from './researchTypes/a_general';
+import { generalResearch as advancedGeneralResearch } from './researchTypes/a_general';
 import { literatureSearchPaper as advancedLiteratureResearch } from './researchTypes/a_literature';
 import { experimentalDesign as advancedExperimentalResearch } from './researchTypes/a_expermental';
 
@@ -137,37 +137,59 @@ export const conductSectionResearch = async (
     for (const section of sections) {
       const prompt = constructPrompt(title, section, citationStyle);
 
-      const response = await axios.post(
-        'https://api.groq.com/openai/v1/chat/completions',
-        {
-          model,
-          messages: [
+      let response;
+      let attempts = 0;
+      const maxAttempts = 5;
+      const delayBetweenAttempts = 15000; // 15 seconds
+
+      while (attempts < maxAttempts) {
+        try {
+          response = await axios.post(
+            'https://api.groq.com/openai/v1/chat/completions',
             {
-              role: 'system',
-              content: `You are an expert research assistant specializing in ${config.title}. 
-                       Provide detailed, well-structured content with appropriate citations in ${citationStyle} format. 
-                       Every paragraph must include at least one citation.
-                       Ensure all claims are supported by references.
-                       Always include a numbered REFERENCES section at the end.
-                       Keep the original formatting exactly as requested.`
+              model,
+              messages: [
+                {
+                  role: 'system',
+                  content: `You are an expert research assistant specializing in ${config.title}. 
+                           Provide detailed, well-structured content with appropriate citations in ${citationStyle} format. 
+                           Every paragraph must include at least one citation.
+                           Ensure all claims are supported by references.
+                           Always include a numbered REFERENCES section at the end.
+                           Keep the original formatting exactly as requested.`
+                },
+                {
+                  role: 'user',
+                  content: prompt
+                }
+              ],
+              temperature: 0.7,
+              max_tokens: 2000
             },
             {
-              role: 'user',
-              content: prompt
+              headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+              }
             }
-          ],
-          temperature: 0.7,
-          max_tokens: 2000
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
+          );
+
+          await delay(15000); // 15-second delay after each chat completion
+          break; // Exit the retry loop if successful
+        } catch (error) {
+          if (axios.isAxiosError(error) && error.response?.data?.error?.message.includes('Rate limit reached')) {
+            console.warn('Rate limit reached, retrying...');
+            attempts++;
+            await delay(delayBetweenAttempts);
+          } else {
+            throw error;
           }
         }
-      );
+      }
 
-      await delay(30000); // 30-second delay
+      if (!response) {
+        throw new Error('Failed to complete section research after multiple attempts');
+      }
 
       const sectionContent = response.data.choices[0].message.content;
       const [mainContent, referencesSection] = splitContentAndReferences(sectionContent);

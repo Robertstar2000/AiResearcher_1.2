@@ -1,3 +1,5 @@
+import { ResearchTypeConfig } from '../../types';
+
 const generalResearch: ResearchTypeConfig = {
   title: "General Research",
   description: "Comprehensive research framework tailored for academic purposes to assist human researchers",

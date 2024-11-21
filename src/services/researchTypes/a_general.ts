@@ -1,3 +1,4 @@
+import { ResearchTypeConfig } from '../../types';
 
 export const generalResearch = {
   title: "General Research",
